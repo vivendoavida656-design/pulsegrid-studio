@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PulseGrid Studio - Organizador de Publica��es</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #090b10;
+      --bg-surface: #111520;
+      --bg-elevated: #171c2b;
+      --bg-hover: #1e2538;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text-primary: #f3f6fc;
+      --text-secondary: #9aa5be;
+      --text-muted: #66728f;
+
+      --accent-vice: #ec4899;
+      --accent-tudo: #3b82f6;
+      --accent-kryon: #10b981;
+      --accent-active: #ec4899;
+
+      --ig-color: #e1306c;
+      --ig-bg: rgba(225, 48, 108, 0.14);
+      --ig-border: rgba(225, 48, 108, 0.35);
+
+      --tt-color: #25f4ee;
+      --tt-bg: rgba(37, 244, 238, 0.12);
+      --tt-border: rgba(37, 244, 238, 0.32);
+
+      --yt-color: #ff4e45;
+      --yt-bg: rgba(255, 78, 69, 0.14);
+      --yt-border: rgba(255, 78, 69, 0.35);
+
+      --success: #10b981;
+      --warning: #f59e0b;
+      --radius: 14px;
+      --radius-sm: 9px;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(900px 500px at 10% -10%, rgba(236, 72, 153, 0.10), transparent 60%),
+        radial-gradient(800px 500px at 90% 0%, rgba(59, 130, 246, 0.10), transparent 60%),
+        var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    .app-shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px 22px 48px;
+    }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 18px;
+      background: rgba(17, 21, 32, 0.85);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-active), #6366f1);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 17px;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+      transition: background 0.3s ease;
+    }
+
+    .brand-title h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+    .brand-title span { font-size: 12px; color: var(--text-secondary); }
+
+    .topbar-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .user-pill select {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 12.5px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .user-pill select option { background: var(--bg-surface); color: var(--text-primary); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      font-family: inherit;
+    }
+
+    .btn:hover { background: var(--bg-hover); border-color: var(--border-strong); transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-active), #6366f1); border-color: transparent; color: #fff; }
+    .btn-primary:hover { filter: brightness(1.08); border-color: transparent; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 8px; }
+
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warning); box-shadow: 0 0 8px var(--warning); }
+    .sync-badge.live .sync-dot { background: var(--success); box-shadow: 0 0 10px var(--success); }
+
+    .company-tabs-wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .company-tabs { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .company-tab {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 18px;
+      border-radius: 13px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .company-tab:hover { background: var(--bg-elevated); color: var(--text-primary); }
+    .company-tab .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .company-tab.active {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-color: var(--accent-active);
+      box-shadow: 0 0 0 1px var(--accent-active), 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .company-tab .tab-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+    }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+    .stat-value { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+    .stat-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+    .stat-icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; font-size: 17px; background: rgba(255, 255, 255, 0.05); }
+
+    .main-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 18px; align-items: start; }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .filter-pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .filter-pill.active { color: #fff; border-color: var(--accent-active); background: rgba(255, 255, 255, 0.10); }
+
+    .cal-nav { display: flex; align-items: center; gap: 8px; }
+    .cal-month-label { font-size: 15px; font-weight: 700; min-width: 150px; text-align: center; text-transform: capitalize; }
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 6px; }
+    .cal-weekday { text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); padding: 6px 0; letter-spacing: 0.05em; }
+    .cal-weekday.priority { color: #f472b6; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+
+    .cal-day {
+      min-height: 112px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      overflow: hidden;
+    }
+
+    .cal-day:hover { border-color: var(--border-strong); background: var(--bg-hover); }
+    .cal-day.other-month { opacity: 0.35; }
+    .cal-day.today { border-color: rgba(255, 255, 255, 0.35); }
+    .cal-day.selected { border-color: var(--accent-active); box-shadow: 0 0 0 1px var(--accent-active); background: #1b2236; }
+
+    .cal-day-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px; }
+    .cal-day-num { font-size: 12px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .cal-day.today .cal-day-num { background: var(--accent-active); color: #fff; padding: 1px 6px; border-radius: 6px; }
+    .day-badge-star { font-size: 10px; color: #f472b6; font-weight: 600; }
+
+    .cal-chips { display: flex; flex-direction: column; gap: 3px; overflow-y: auto; max-height: 76px; }
+    .cal-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 2px 5px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cal-chip.ig { background: var(--ig-bg); color: #ff85b3; border-color: var(--ig-border); }
+    .cal-chip.tt { background: var(--tt-bg); color: #7ef9f5; border-color: var(--tt-border); }
+    .cal-chip.yt { background: var(--yt-bg); color: #ff8a84; border-color: var(--yt-border); }
+    .cal-chip.scheduled { opacity: 0.72; border-style: dashed; }
+    .cal-chip-time { font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+
+    .day-inspector-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+    .selected-date-title { font-size: 16px; font-weight: 700; text-transform: capitalize; }
+    .selected-date-hint { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+    .network-section { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 14px; padding: 13px; margin-bottom: 12px; }
+    .network-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    .network-title-wrap { display: flex; align-items: center; gap: 9px; }
+
+    .net-icon { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-size: 14px; font-weight: 800; }
+    .net-icon.ig { background: var(--ig-bg); color: var(--ig-color); border: 1px solid var(--ig-border); }
+    .net-icon.tt { background: var(--tt-bg); color: var(--tt-color); border: 1px solid var(--tt-border); }
+    .net-icon.yt { background: var(--yt-bg); color: var(--yt-color); border: 1px solid var(--yt-border); }
+
+    .network-name { font-size: 14px; font-weight: 700; }
+    .network-note { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; line-height: 1.35; }
+    .network-note.highlight { color: #f9a8d4; }
+
+    .slots-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+    .slot-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .slot-btn:hover { transform: translateY(-1px); background: var(--bg-hover); }
+    .slot-btn.test-slot { border-style: dashed; }
+    .slot-btn.status-scheduled.ig { background: var(--ig-bg); border-color: var(--ig-border); color: #ff9cc2; }
+    .slot-btn.status-scheduled.tt { background: var(--tt-bg); border-color: var(--tt-border); color: #8afaf6; }
+    .slot-btn.status-scheduled.yt { background: var(--yt-bg); border-color: var(--yt-border); color: #ff9c97; }
+    .slot-btn.status-published { background: rgba(16, 185, 129, 0.18) !important; border-color: rgba(16, 185, 129, 0.55) !important; color: #6ee7b7 !important; }
+
+    .slot-tag { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 1px 5px; border-radius: 5px; background: rgba(255, 255, 255, 0.08); }
+    .slot-remove { margin-left: 2px; font-size: 11px; opacity: 0.6; padding: 0 3px; cursor: pointer; }
+    .slot-remove:hover { opacity: 1; color: #f87171; }
+
+    .add-slot-inline { display: flex; gap: 6px; margin-top: 10px; align-items: center; }
+
+    .input-sm { background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); border-radius: 8px; padding: 6px 9px; font-size: 12px; font-family: inherit; outline: none; }
+    .input-sm:focus { border-color: var(--accent-active); }
+
+    .day-posts-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .post-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 11px; background: var(--bg-elevated); border: 1px solid var(--border); }
+    .post-item-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .post-item-meta { min-width: 0; }
+    .post-item-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .post-item-sub { font-size: 11.5px; color: var(--text-secondary); }
+    .post-item-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+    .status-pill { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; cursor: pointer; border: 1px solid transparent; }
+    .status-pill.published { background: rgba(16, 185, 129, 0.16); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.35); }
+    .status-pill.scheduled { background: rgba(245, 158, 11, 0.16); color: #fcd34d; border-color: rgba(245, 158, 11, 0.35); }
+
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(4, 6, 12, 0.76); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 18px; z-index: 999; }
+    .modal-backdrop.open { display: flex; }
+    .modal { width: 100%; max-width: 560px; background: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: 18px; padding: 22px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65); max-height: 90vh; overflow-y: auto; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .modal-header h2 { font-size: 17px; font-weight: 700; }
+    .form-group { margin-bottom: 13px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+    .input-full { width: 100%; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-primary); border-radius: 10px; padding: 9px 12px; font-size: 13px; font-family: inherit; outline: none; }
+    .input-full:focus { border-color: var(--accent-active); }
+    .code-box { background: #0a0d14; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #a5b4fc; overflow-x: auto; line-height: 1.5; }
+
+    .toast { position: fixed; bottom: 22px; right: 22px; background: var(--bg-elevated); border: 1px solid var(--border-strong); color: var(--text-primary); padding: 11px 16px; border-radius: 12px; font-size: 13px; font-weight: 600; box-shadow: var(--shadow); z-index: 1200; opacity: 0; transform: translateY(10px); pointer-events: none; transition: 0.22s ease; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1080px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .cal-day { min-height: 82px; padding: 5px; }
+      .cal-chip { font-size: 9.5px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo" id="brandLogo">VC</div>
+        <div class="brand-title">
+          <h1>PulseGrid Studio</h1>
+          <span>Calend�rio &amp; Marca��o de Publica��es  Multi-Empresas</span>
+        </div>
+      </div>
+
+      <div class="topbar-controls">
+        <div class="user-pill">
+          <span>Operador:</span>
+          <select id="operatorSelect" title="Quem est� marcando">
+            <option value="Voc�">Voc�</option>
+            <option value="S�cio">S�cio</option>
+            <option value="Social Media">Social Media</option>
+          </select>
+        </div>
+
+        <button class="sync-badge" id="btnOpenSync" title="Configurar sincroniza��o em tempo real na Vercel">
+          <span class="sync-dot"></span>
+          <span id="syncLabel">Modo Local (Configurar Tempo Real)</span>
+        </button>
+
+        <button class="btn" id="btnScheduleManager">?? Hor�rios da Empresa</button>
+        <button class="btn btn-primary" id="btnQuickPost">+ Nova Marca��o</button>
+      </div>
+    </header>
+
+    <div class="company-tabs-wrap">
+      <div class="company-tabs" id="companyTabs"></div>
+
+      <div class="filter-pills" id="networkFilterPills">
+        <button class="filter-pill active" data-filter="all">Todas as Redes</button>
+        <button class="filter-pill" data-filter="ig">Instagram Reels</button>
+        <button class="filter-pill" data-filter="tt">TikTok</button>
+        <button class="filter-pill" data-filter="yt">YouTube Shorts</button>
+      </div>
+    </div>
+
+    <section class="stats-row" id="statsRow"></section>
+
+    <main class="main-grid">
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title"><span>?? Calend�rio de Publica��es</span></div>
+          <div class="cal-nav">
+            <button class="btn btn-sm" id="btnPrevMonth">?</button>
+            <span class="cal-month-label" id="calMonthLabel"></span>
+            <button class="btn btn-sm" id="btnNextMonth">?</button>
+            <button class="btn btn-sm" id="btnToday">Hoje</button>
+          </div>
+        </div>
+
+        <div class="cal-weekdays">
+          <div class="cal-weekday">Dom</div>
+          <div class="cal-weekday">Seg</div>
+          <div class="cal-weekday priority" title="Testar Instagram Reels">Ter ?</div>
+          <div class="cal-weekday priority" title="Prioridade Instagram Reels">Qua ?</div>
+          <div class="cal-weekday priority" title="Prioridade Instagram Reels">Qui ?</div>
+          <div class="cal-weekday">Sex</div>
+          <div class="cal-weekday">S�b</div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </section>
+
+      <aside class="card">
+        <div class="day-inspector-header">
+          <div>
+            <div class="selected-date-title" id="selectedDateTitle"></div>
+            <div class="selected-date-hint" id="selectedDateHint"></div>
+          </div>
+          <button class="btn btn-sm" id="btnMarkAllDay">V Marcar Dia</button>
+        </div>
+
+        <div id="networksContainer"></div>
+
+        <div style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <strong style="font-size:13.5px;">?? Publica��es registradas neste dia</strong>
+            <span style="font-size:11.5px; color:var(--text-muted);" id="dayTotalCount"></span>
+          </div>
+          <div class="day-posts-list" id="dayPostsList"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="postModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="postModalTitle">Registrar Publica��o</h2>
+        <button class="btn btn-sm" onclick="closeModal('postModal')">?</button>
+      </div>
+      <form id="postForm">
+        <input type="hidden" id="pmPostId" />
+        <div class="form-group">
+          <label>Empresa</label>
+          <input type="text" class="input-full" id="pmCompanyName" disabled />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label>Data</label>
+            <input type="date" class="input-full" id="pmDate" required />
+          </div>
+          <div class="form-group">
+            <label>Hor�rio (flex�vel)</label>
+            <input type="text" class="input-full" id="pmTime" placeholder="Ex: 12h30 ou 18h" required />
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label>Rede Social</label>
+            <select class="input-full" id="pmNetwork">
+              <option value="ig">Instagram Reels</option>
+              <option value="tt">TikTok</option>
+              <option value="yt">YouTube Shorts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select class="input-full" id="pmStatus">
+              <option value="published">? Publicado</option>
+              <option value="scheduled">?? Agendado / Planejado</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>T�tulo do Corte / Conte�do (opcional)</label>
+          <input type="text" class="input-full" id="pmTitle" placeholder="Ex: Corte podcast #42 - gancho viral" />
+        </div>
+        <div class="form-group">
+          <label>Observa��o / Link</label>
+          <input type="text" class="input-full" id="pmNote" placeholder="Link do v�deo, �udio em alta ou observa��o" />
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
+          <button type="button" class="btn" onclick="closeModal('postModal')">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Marca��o</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="scheduleModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>?? Hor�rios Flex�veis - <span id="smCompanyLabel"></span></h2>
+        <button class="btn btn-sm" onclick="closeModal('scheduleModal')">?</button>
+      </div>
+      <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px;">
+        Personalize os bot�es de hor�rio e observa��es estrat�gicas desta empresa. As altera��es atualizam imediatamente a grade de marca��o r�pida.
+      </p>
+      <div id="scheduleEditorBody"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+        <button type="button" class="btn btn-sm" id="btnResetSchedules">Restaurar Padr�es</button>
+        <button type="button" class="btn btn-primary" onclick="closeModal('scheduleModal')">Concluir</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="syncModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>?? Sincroniza��o em Tempo Real (Vercel + S�cio)</h2>
+        <button class="btn btn-sm" onclick="closeModal('syncModal')">?</button>
+      </div>
+      <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">
+        Esta ferramenta j� sincroniza instantaneamente entre abas locais e salva automaticamente. Para voc� e seu s�cio verem as marca��es <strong>ao vivo em dispositivos diferentes pela Vercel</strong>, conecte um banco gratuito do <strong>Firebase Realtime Database</strong> em 1 minuto:
+      </p>
+      <div class="code-box" style="margin-bottom:12px;">
+        1. Acesse console.firebase.google.com  Criar Projeto<br>
+        2. Menu "Build"  Realtime Database  Criar Banco (Modo Teste)<br>
+        3. Copie a URL do banco (ex: https://seu-app-default-rtdb.firebaseio.com)<br>
+        4. Cole abaixo e clique em Conectar. Envie o link gerado para seu s�cio!
+      </div>
+      <div class="form-group">
+        <label>URL do Firebase Realtime Database</label>
+        <input type="url" class="input-full" id="syncDbUrl" placeholder="https://seu-projeto-default-rtdb.firebaseio.com" />
+      </div>
+      <div class="form-group">
+        <label>Nome da Sala Compartilhada</label>
+        <input type="text" class="input-full" id="syncRoomName" placeholder="equipe-clips-principal" value="pulsegrid-studio-main" />
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; margin-bottom:16px;">
+        <button type="button" class="btn btn-primary" id="btnSaveSync">Conectar Tempo Real</button>
+        <button type="button" class="btn" id="btnCopyShareLink">?? Copiar Link p/ S�cio</button>
+        <button type="button" class="btn" id="btnDisconnectSync">Desconectar</button>
+      </div>
+      <div style="border-top:1px solid var(--border); padding-top:12px; display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; color:var(--text-secondary);">Backup manual (JSON):</span>
+        <div style="display:flex; gap:8px;">
+          <button type="button" class="btn btn-sm" id="btnExportJson">? Exportar JSON</button>
+          <label class="btn btn-sm" style="cursor:pointer;">
+            ? Importar JSON
+            <input type="file" id="importJsonInput" accept=".json" style="display:none;" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const NETWORKS = {
+      ig: { id: 'ig', name: 'Instagram Reels', short: 'Reels', badge: 'IG' },
+      tt: { id: 'tt', name: 'TikTok', short: 'TikTok', badge: 'TT' },
+      yt: { id: 'yt', name: 'YouTube Shorts', short: 'Shorts', badge: 'YT' }
+    };
+
+    const DEFAULT_COMPANIES = [
+      {
+        id: 'vice-city-clips',
+        name: 'Vice City Clips',
+        short: 'VC',
+        color: '#ec4899',
+        schedules: {
+          ig: {
+            slots: [{ time: '12h30', tag: '' }, { time: '18h30', tag: '' }, { time: '20h30', tag: '' }],
+            note: 'Priorize quarta e quinta; teste tamb�m ter�a.'
+          },
+          tt: {
+            slots: [{ time: '09h', tag: '' }, { time: '16h', tag: '' }, { time: '18h', tag: 'Teste' }, { time: '20h', tag: '' }],
+            note: 'Teste tamb�m 18h. Os estudos divergem sobre o melhor hor�rio (Data from 7M Posts+2).'
+          },
+          yt: {
+            slots: [{ time: '12h', tag: '' }, { time: '18h', tag: '' }, { time: '20h', tag: '' }],
+            note: 'Hor�rios iniciais para experimentar, n�o uma garantia de melhor desempenho.'
+          }
+        }
+      },
+      {
+        id: 'tudo-cortes',
+        name: 'Tudo Cortes',
+        short: 'TC',
+        color: '#3b82f6',
+        schedules: {
+          ig: {
+            slots: [{ time: '12h30', tag: '' }, { time: '18h30', tag: '' }, { time: '20h30', tag: '' }],
+            note: 'Priorize quarta e quinta; teste tamb�m ter�a.'
+          },
+          tt: {
+            slots: [{ time: '09h', tag: '' }, { time: '16h', tag: '' }, { time: '18h', tag: 'Teste' }, { time: '20h', tag: '' }],
+            note: 'Teste tamb�m 18h. Os estudos divergem sobre o melhor hor�rio (Data from 7M Posts+2).'
+          },
+          yt: {
+            slots: [{ time: '12h', tag: '' }, { time: '18h', tag: '' }, { time: '20h', tag: '' }],
+            note: 'Hor�rios iniciais para experimentar, n�o uma garantia de melhor desempenho.'
+          }
+        }
+      },
+      {
+        id: 'kryon',
+        name: 'Kryon',
+        short: 'KR',
+        color: '#10b981',
+        schedules: {
+          ig: {
+            slots: [{ time: '12h30', tag: '' }, { time: '18h30', tag: '' }, { time: '20h30', tag: '' }],
+            note: 'Priorize quarta e quinta; teste tamb�m ter�a.'
+          },
+          tt: {
+            slots: [{ time: '09h', tag: '' }, { time: '16h', tag: '' }, { time: '18h', tag: 'Teste' }, { time: '20h', tag: '' }],
+            note: 'Teste tamb�m 18h. Os estudos divergem sobre o melhor hor�rio (Data from 7M Posts+2).'
+          },
+          yt: {
+            slots: [{ time: '12h', tag: '' }, { time: '18h', tag: '' }, { time: '20h', tag: '' }],
+            note: 'Hor�rios iniciais para experimentar, n�o uma garantia de melhor desempenho.'
+          }
+        }
+      }
+    ];
+
+    const STORAGE_KEY = 'pulsegrid_studio_v1';
+    const SYNC_CFG_KEY = 'pulsegrid_sync_cfg_v1';
+    const bc = ('BroadcastChannel' in window) ? new BroadcastChannel('pulsegrid_realtime_local') : null;
+
+    function todayISO() { return toISODate(new Date()); }
+    function toISODate(d) {
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+    function parseISO(iso) { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d); }
+    function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+    let state = loadState();
+    let activeCompanyId = state.companies[0].id;
+    let activeFilter = 'all';
+    let currentCalDate = new Date();
+    let selectedDateISO = todayISO();
+    let operatorName = localStorage.getItem('pulsegrid_operator') || 'Voc�';
+    let syncConfig = loadSyncConfig();
+    let sseConnection = null;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.companies) && Array.isArray(parsed.posts)) return parsed;
+        }
+      } catch (e) {}
+      return { companies: clone(DEFAULT_COMPANIES), posts: [], updatedAt: Date.now() };
+    }
+
+    function loadSyncConfig() {
+      if (window.location.hash.startsWith('#sync=')) {
+        try {
+          const decoded = JSON.parse(atob(window.location.hash.slice(6)));
+          if (decoded.dbUrl && decoded.room) {
+            localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(decoded));
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+            return decoded;
+          }
+        } catch (e) {}
+      }
+      try {
+        const raw = localStorage.getItem(SYNC_CFG_KEY);
+        return raw ? JSON.parse(raw) : { dbUrl: '', room: 'pulsegrid-studio-main' };
+      } catch (e) {
+        return { dbUrl: '', room: 'pulsegrid-studio-main' };
+      }
+    }
+
+    function saveState(pushRemote = true) {
+      state.updatedAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      if (bc) bc.postMessage({ type: 'state-update', state });
+      if (pushRemote && syncConfig.dbUrl) pushToFirebase();
+    }
+
+    if (bc) {
+      bc.onmessage = (ev) => {
+        if (ev.data && ev.data.type === 'state-update') {
+          state = ev.data.state;
+          renderAll();
+        }
+      };
+    }
+
+    function getFirebaseEndpoint() {
+      const base = syncConfig.dbUrl.replace(/\/+$/, '');
+      const room = encodeURIComponent(syncConfig.room || 'pulsegrid-studio-main');
+      return `${base}/rooms/${room}.json`;
+    }
+
+    async function pushToFirebase() {
+      if (!syncConfig.dbUrl) return;
+      try {
+        await fetch(getFirebaseEndpoint(), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(state)
+        });
+      } catch (err) {}
+    }
+
+    function connectRealtime() {
+      if (sseConnection) { sseConnection.close(); sseConnection = null; }
+      updateSyncUI(false);
+      if (!syncConfig.dbUrl) return;
+      const endpoint = getFirebaseEndpoint();
+      fetch(endpoint).then(r => r.json()).then(remote => {
+        if (remote && Array.isArray(remote.companies) && Array.isArray(remote.posts)) {
+          if (!state.updatedAt || remote.updatedAt >= state.updatedAt) {
+            state = remote;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            renderAll();
+          } else { pushToFirebase(); }
+        } else { pushToFirebase(); }
+      }).catch(() => {});
+
+      try {
+        sseConnection = new EventSource(endpoint);
+        sseConnection.addEventListener('put', (e) => {
+          const payload = JSON.parse(e.data);
+          if (payload && payload.path === '/' && payload.data) {
+            const remote = payload.data;
+            if (remote.updatedAt && remote.updatedAt !== state.updatedAt) {
+              state = remote;
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+              renderAll();
+              showToast('Atualizado ao vivo pelo s�cio!');
+            }
+          }
+        });
+        sseConnection.onopen = () => updateSyncUI(true);
+        sseConnection.onerror = () => updateSyncUI(false);
+      } catch (e) { updateSyncUI(false); }
+    }
+
+    function updateSyncUI(isLive) {
+      const badge = document.getElementById('btnOpenSync');
+      const label = document.getElementById('syncLabel');
+      if (syncConfig.dbUrl && isLive) { badge.classList.add('live'); label.textContent = `Ao Vivo (${syncConfig.room})`; }
+      else if (syncConfig.dbUrl) { badge.classList.remove('live'); label.textContent = `Reconectando (${syncConfig.room})...`; }
+      else { badge.classList.remove('live'); label.textContent = 'Modo Local (Configurar Tempo Real)'; }
+    }
+
+    function getActiveCompany() { return state.companies.find(c => c.id === activeCompanyId) || state.companies[0]; }
+    function normalizeTimeSort(t) {
+      const clean = t.toLowerCase().replace('h', ':');
+      const [h, m = '0'] = clean.split(':');
+      return (parseInt(h, 10) || 0) * 60 + (parseInt(m, 10) || 0);
+    }
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+    }
+    function uid() { return 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7); }
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
+    }
+
+    function applyCompanyTheme() {
+      const comp = getActiveCompany();
+      document.documentElement.style.setProperty('--accent-active', comp.color);
+      document.getElementById('brandLogo').textContent = comp.short;
+    }
+
+    function renderCompanyTabs() {
+      const wrap = document.getElementById('companyTabs');
+      const monthKey = `${currentCalDate.getFullYear()}-${String(currentCalDate.getMonth() + 1).padStart(2, '0')}`;
+      wrap.innerHTML = state.companies.map(comp => {
+        const count = state.posts.filter(p => p.companyId === comp.id && p.date.startsWith(monthKey)).length;
+        const active = comp.id === activeCompanyId ? 'active' : '';
+        return `
+          <button class="company-tab ${active}" data-company="${comp.id}">
+            <span class="dot" style="background:${comp.color}; box-shadow:0 0 10px ${comp.color};"></span>
+            <span>${comp.name}</span>
+            <span class="tab-count">${count}</span>
+          </button>`;
+      }).join('');
+      wrap.querySelectorAll('.company-tab').forEach(btn => {
+        btn.addEventListener('click', () => { activeCompanyId = btn.dataset.company; renderAll(); });
+      });
+    }
+
+    function renderStats() {
+      const comp = getActiveCompany();
+      const monthKey = `${currentCalDate.getFullYear()}-${String(currentCalDate.getMonth() + 1).padStart(2, '0')}`;
+      const monthPosts = state.posts.filter(p => p.companyId === comp.id && p.date.startsWith(monthKey));
+      const published = monthPosts.filter(p => p.status === 'published').length;
+      const scheduled = monthPosts.filter(p => p.status === 'scheduled').length;
+      const todayCount = state.posts.filter(p => p.companyId === comp.id && p.date === todayISO()).length;
+      const igCount = monthPosts.filter(p => p.network === 'ig').length;
+      const ttCount = monthPosts.filter(p => p.network === 'tt').length;
+      const ytCount = monthPosts.filter(p => p.network === 'yt').length;
+
+      document.getElementById('statsRow').innerHTML = `
+        <div class="stat-card">
+          <div><div class="stat-label">Publicados no M�s</div><div class="stat-value" style="color:#6ee7b7;">${published}</div><div class="stat-sub">${comp.name}</div></div>
+          <div class="stat-icon">?</div>
+        </div>
+        <div class="stat-card">
+          <div><div class="stat-label">Agendados / Planejados</div><div class="stat-value" style="color:#fcd34d;">${scheduled}</div><div class="stat-sub">Aguardando confirma��o</div></div>
+          <div class="stat-icon">??</div>
+        </div>
+        <div class="stat-card">
+          <div><div class="stat-label">Marca��es Hoje</div><div class="stat-value">${todayCount}</div><div class="stat-sub">Meta di�ria: ${Object.values(comp.schedules).reduce((a, b) => a + b.slots.length, 0)} hor�rios</div></div>
+          <div class="stat-icon">?</div>
+        </div>
+        <div class="stat-card">
+          <div><div class="stat-label">Distribui��o por Rede</div><div class="stat-value" style="font-size:15px; margin-top:4px;"><span style="color:#ff85b3;">IG ${igCount}</span> � <span style="color:#7ef9f5;">TT ${ttCount}</span> � <span style="color:#ff8a84;">YT ${ytCount}</span></div><div class="stat-sub">Total no m�s: ${monthPosts.length}</div></div>
+          <div class="stat-icon">??</div>
+        </div>`;
+    }
+
+    function renderCalendar() {
+      const year = currentCalDate.getFullYear();
+      const month = currentCalDate.getMonth();
+      const monthNames = ['janeiro', 'fevereiro', 'mar�o', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+      document.getElementById('calMonthLabel').textContent = `${monthNames[month]} ${year}`;
+      const firstDay = new Date(year, month, 1);
+      const gridStart = new Date(year, month, 1 - firstDay.getDay());
+      const comp = getActiveCompany();
+      const todayStr = todayISO();
+      const grid = document.getElementById('calGrid');
+      let html = '';
+
+      for (let i = 0; i < 42; i++) {
+        const d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
+        const iso = toISODate(d);
+        const isOtherMonth = d.getMonth() !== month;
+        const isToday = iso === todayStr;
+        const isSelected = iso === selectedDateISO;
+        const weekday = d.getDay();
+        const isPriorityReels = weekday === 3 || weekday === 4;
+        const isTestReels = weekday === 2;
+
+        let posts = state.posts.filter(p => p.companyId === comp.id && p.date === iso);
+        if (activeFilter !== 'all') posts = posts.filter(p => p.network === activeFilter);
+        posts.sort((a, b) => normalizeTimeSort(a.time) - normalizeTimeSort(b.time));
+
+        const chipsHtml = posts.map(p => {
+          const icon = p.status === 'published' ? 'V' : '?';
+          const cls = p.status === 'published' ? '' : 'scheduled';
+          return `<div class="cal-chip ${p.network} ${cls}" title="${NETWORKS[p.network].name}  ${p.time}"><span class="cal-chip-time">${icon} ${p.time}</span><span>${NETWORKS[p.network].short}</span></div>`;
+        }).join('');
+
+        let starHtml = '';
+        if (isPriorityReels) starHtml = '<span class="day-badge-star">? Reels</span>';
+        else if (isTestReels) starHtml = '<span class="day-badge-star" style="opacity:0.65;">? Teste</span>';
+
+        html += `
+          <div class="cal-day ${isOtherMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${iso}">
+            <div class="cal-day-top"><span class="cal-day-num">${d.getDate()}</span>${starHtml}</div>
+            <div class="cal-chips">${chipsHtml}</div>
+          </div>`;
+      }
+
+      grid.innerHTML = html;
+      grid.querySelectorAll('.cal-day').forEach(el => {
+        el.addEventListener('click', () => { selectedDateISO = el.dataset.date; renderCalendar(); renderDayInspector(); });
+      });
+    }
+
+    function renderDayInspector() {
+      const comp = getActiveCompany();
+      const d = parseISO(selectedDateISO);
+      document.getElementById('selectedDateTitle').textContent = d.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+
+      const wd = d.getDay();
+      let hint = `${comp.name}  Clique no hor�rio para alternar: Publicado  Agendado  Limpar`;
+      if (wd === 3 || wd === 4) hint = `? Dia PRIORIT�RIO para Instagram Reels (${comp.name})`;
+      else if (wd === 2) hint = `? Dia recomendado para TESTE no Instagram Reels (${comp.name})`;
+      document.getElementById('selectedDateHint').textContent = hint;
+
+      const container = document.getElementById('networksContainer');
+      const dayPosts = state.posts.filter(p => p.companyId === comp.id && p.date === selectedDateISO);
+
+      container.innerHTML = Object.keys(NETWORKS).map(netKey => {
+        if (activeFilter !== 'all' && activeFilter !== netKey) return '';
+        const net = NETWORKS[netKey];
+        const sched = comp.schedules[netKey];
+        const slotsHtml = sched.slots.map(slot => {
+          const existing = dayPosts.find(p => p.network === netKey && p.time === slot.time);
+          let statusClass = '';
+          let statusIcon = '	';
+          if (existing) {
+            statusClass = existing.status === 'published' ? 'status-published' : 'status-scheduled';
+            statusIcon = existing.status === 'published' ? '?' : '??';
+          }
+          return `
+            <button type="button" class="slot-btn ${netKey} ${statusClass} ${slot.tag ? 'test-slot' : ''}" data-net="${netKey}" data-time="${slot.time}">
+              <span>${statusIcon}</span><span>${slot.time}</span>${slot.tag ? `<span class="slot-tag">${slot.tag}</span>` : ''}
+            </button>`;
+        }).join('');
+
+        return `
+          <div class="network-section">
+            <div class="network-head">
+              <div class="network-title-wrap">
+                <div class="net-icon ${netKey}">${net.badge}</div>
+                <div>
+                  <div class="network-name">${net.name}</div>
+                  <div class="network-note ${netKey === 'ig' && (wd === 2 || wd === 3 || wd === 4) ? 'highlight' : ''}">${sched.note}</div>
+                </div>
+              </div>
+            </div>
+            <div class="slots-grid">${slotsHtml}</div>
+            <div class="add-slot-inline">
+              <input type="text" class="input-sm" placeholder="+ hor�rio (ex: 21h30)" id="quickSlot_${netKey}" style="width:140px;" />
+              <button type="button" class="btn btn-sm" onclick="quickAddSlot('${netKey}')">Adicionar hor�rio</button>
+            </div>
+          </div>`;
+      }).join('');
+
+      container.querySelectorAll('.slot-btn').forEach(btn => {
+        btn.addEventListener('click', () => toggleSlotStatus(btn.dataset.net, btn.dataset.time));
+      });
+
+      const listEl = document.getElementById('dayPostsList');
+      const sortedPosts = [...dayPosts].sort((a, b) => normalizeTimeSort(a.time) - normalizeTimeSort(b.time));
+      document.getElementById('dayTotalCount').textContent = `${sortedPosts.length} registro(s)`;
+
+      if (sortedPosts.length === 0) {
+        listEl.innerHTML = `<div style="font-size:12.5px; color:var(--text-muted); padding:10px 0;">Nenhum hor�rio marcado neste dia ainda. Clique em qualquer hor�rio acima para marcar!</div>`;
+        return;
+      }
+
+      listEl.innerHTML = sortedPosts.map(p => {
+        const net = NETWORKS[p.network];
+        const statusLabel = p.status === 'published' ? '? Publicado' : '?? Agendado';
+        return `
+          <div class="post-item">
+            <div class="post-item-left">
+              <div class="net-icon ${p.network}" style="width:28px; height:28px; font-size:11px;">${net.badge}</div>
+              <div class="post-item-meta">
+                <div class="post-item-title">${p.time}  ${net.name} ${p.title ? '- ' + escapeHtml(p.title) : ''}</div>
+                <div class="post-item-sub">Por ${escapeHtml(p.author || 'Equipe')} ${p.note ? ' ' + escapeHtml(p.note) : ''}</div>
+              </div>
+            </div>
+            <div class="post-item-actions">
+              <span class="status-pill ${p.status}" onclick="cyclePostStatus('${p.id}')">${statusLabel}</span>
+              <button class="btn btn-sm" onclick="openEditPost('${p.id}')">??</button>
+              <button class="btn btn-sm" onclick="deletePost('${p.id}')">??</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function toggleSlotStatus(network, time) {
+      const comp = getActiveCompany();
+      const idx = state.posts.findIndex(p => p.companyId === comp.id && p.date === selectedDateISO && p.network === network && p.time === time);
+      if (idx === -1) {
+        state.posts.push({ id: uid(), companyId: comp.id, date: selectedDateISO, network, time, status: 'published', title: '', note: '', author: operatorName });
+        showToast(`? Marcado ${NETWORKS[network].short} �s ${time} (Publicado)`);
+      } else if (state.posts[idx].status === 'published') {
+        state.posts[idx].status = 'scheduled';
+        state.posts[idx].author = operatorName;
+        showToast(`?? Alterado para Agendado (${NETWORKS[network].short} ${time})`);
+      } else {
+        state.posts.splice(idx, 1);
+        showToast(`Marca��o removida (${NETWORKS[network].short} ${time})`);
+      }
+      saveState(); renderAll();
+    }
+
+    window.cyclePostStatus = function(postId) {
+      const p = state.posts.find(x => x.id === postId);
+      if (!p) return;
+      p.status = p.status === 'published' ? 'scheduled' : 'published';
+      p.author = operatorName;
+      saveState(); renderAll();
+    };
+
+    window.deletePost = function(postId) {
+      state.posts = state.posts.filter(x => x.id !== postId);
+      saveState(); renderAll(); showToast('Marca��o removida');
+    };
+
+    window.quickAddSlot = function(netKey) {
+      const input = document.getElementById(`quickSlot_${netKey}`);
+      const val = input.value.trim();
+      if (!val) return;
+      const comp = getActiveCompany();
+      if (comp.schedules[netKey].slots.some(s => s.time.toLowerCase() === val.toLowerCase())) {
+        showToast('Esse hor�rio j� existe nesta rede!');
+        return;
+      }
+      comp.schedules[netKey].slots.push({ time: val, tag: '' });
+      comp.schedules[netKey].slots.sort((a, b) => normalizeTimeSort(a.time) - normalizeTimeSort(b.time));
+      input.value = '';
+      saveState(); renderAll(); showToast(`Hor�rio ${val} adicionado em ${comp.name}`);
+    };
+
+    document.getElementById('btnMarkAllDay').addEventListener('click', () => {
+      const comp = getActiveCompany();
+      let added = 0;
+      Object.keys(NETWORKS).forEach(netKey => {
+        if (activeFilter !== 'all' && activeFilter !== netKey) return;
+        comp.schedules[netKey].slots.forEach(slot => {
+          const exists = state.posts.some(p => p.companyId === comp.id && p.date === selectedDateISO && p.network === netKey && p.time === slot.time);
+          if (!exists) {
+            state.posts.push({ id: uid(), companyId: comp.id, date: selectedDateISO, network: netKey, time: slot.time, status: 'published', title: '', note: '', author: operatorName });
+            added++;
+          }
+        });
+      });
+      saveState(); renderAll();
+      showToast(added > 0 ? `? ${added} hor�rio(s) marcados!` : 'Todos os hor�rios do dia j� estavam marcados.');
+    });
+
+    window.openModal = id => document.getElementById(id).classList.add('open');
+    window.closeModal = id => document.getElementById(id).classList.remove('open');
+
+    document.getElementById('btnQuickPost').addEventListener('click', () => {
+      const comp = getActiveCompany();
+      document.getElementById('postModalTitle').textContent = 'Nova Marca��o de Publica��o';
+      document.getElementById('pmPostId').value = '';
+      document.getElementById('pmCompanyName').value = comp.name;
+      document.getElementById('pmDate').value = selectedDateISO;
+      document.getElementById('pmTime').value = '12h30';
+      document.getElementById('pmNetwork').value = activeFilter === 'all' ? 'ig' : activeFilter;
+      document.getElementById('pmStatus').value = 'published';
+      document.getElementById('pmTitle').value = '';
+      document.getElementById('pmNote').value = '';
+      openModal('postModal');
+    });
+
+    window.openEditPost = function(postId) {
+      const p = state.posts.find(x => x.id === postId);
+      if (!p) return;
+      const comp = state.companies.find(c => c.id === p.companyId);
+      document.getElementById('postModalTitle').textContent = 'Editar Publica��o';
+      document.getElementById('pmPostId').value = p.id;
+      document.getElementById('pmCompanyName').value = comp ? comp.name : '';
+      document.getElementById('pmDate').value = p.date;
+      document.getElementById('pmTime').value = p.time;
+      document.getElementById('pmNetwork').value = p.network;
+      document.getElementById('pmStatus').value = p.status;
+      document.getElementById('pmTitle').value = p.title || '';
+      document.getElementById('pmNote').value = p.note || '';
+      openModal('postModal');
+    };
+
+    document.getElementById('postForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const postId = document.getElementById('pmPostId').value;
+      const comp = getActiveCompany();
+      const payload = {
+        date: document.getElementById('pmDate').value,
+        time: document.getElementById('pmTime').value.trim(),
+        network: document.getElementById('pmNetwork').value,
+        status: document.getElementById('pmStatus').value,
+        title: document.getElementById('pmTitle').value.trim(),
+        note: document.getElementById('pmNote').value.trim(),
+        author: operatorName
+      };
+      if (postId) {
+        const idx = state.posts.findIndex(x => x.id === postId);
+        if (idx !== -1) state.posts[idx] = { ...state.posts[idx], ...payload };
+        showToast('Publica��o atualizada!');
+      } else {
+        state.posts.push({ id: uid(), companyId: comp.id, ...payload });
+        selectedDateISO = payload.date;
+        showToast('Publica��o registrada!');
+      }
+      closeModal('postModal'); saveState(); renderAll();
+    });
+
+    function renderScheduleEditor() {
+      const comp = getActiveCompany();
+      document.getElementById('smCompanyLabel').textContent = comp.name;
+      document.getElementById('scheduleEditorBody').innerHTML = Object.keys(NETWORKS).map(netKey => {
+        const net = NETWORKS[netKey];
+        const sched = comp.schedules[netKey];
+        const tagsHtml = sched.slots.map((s, idx) => `
+          <span class="slot-btn ${netKey}" style="padding:5px 9px; font-size:12px;">
+            ${s.time}${s.tag ? ' (' + s.tag + ')' : ''}
+            <span class="slot-remove" onclick="removeCompanySlot('${netKey}', ${idx})">?</span>
+          </span>`).join('');
+        return `
+          <div class="network-section">
+            <div style="font-weight:700; font-size:13.5px; margin-bottom:8px;">${net.name}</div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">${tagsHtml}</div>
+            <div style="display:flex; gap:6px; margin-bottom:8px;">
+              <input type="text" class="input-sm" id="smAddTime_${netKey}" placeholder="Novo hor�rio (ex: 14h30)" style="flex:1;" />
+              <input type="text" class="input-sm" id="smAddTag_${netKey}" placeholder="Tag opcional" style="width:130px;" />
+              <button type="button" class="btn btn-sm" onclick="addCompanySlot('${netKey}')">+ Add</button>
+            </div>
+            <input type="text" class="input-full" value="${escapeHtml(sched.note)}" onchange="updateCompanyNote('${netKey}', this.value)" style="font-size:12px; padding:7px 10px;" />
+          </div>`;
+      }).join('');
+    }
+
+    window.removeCompanySlot = (netKey, idx) => { getActiveCompany().schedules[netKey].slots.splice(idx, 1); saveState(); renderScheduleEditor(); renderDayInspector(); };
+    window.addCompanySlot = (netKey) => {
+      const time = document.getElementById(`smAddTime_${netKey}`).value.trim();
+      if (!time) return;
+      const tag = document.getElementById(`smAddTag_${netKey}`).value.trim();
+      const comp = getActiveCompany();
+      comp.schedules[netKey].slots.push({ time, tag });
+      comp.schedules[netKey].slots.sort((a, b) => normalizeTimeSort(a.time) - normalizeTimeSort(b.time));
+      saveState(); renderScheduleEditor(); renderDayInspector();
+    };
+    window.updateCompanyNote = (netKey, val) => { getActiveCompany().schedules[netKey].note = val; saveState(); renderDayInspector(); };
+
+    document.getElementById('btnScheduleManager').addEventListener('click', () => { renderScheduleEditor(); openModal('scheduleModal'); });
+    document.getElementById('btnResetSchedules').addEventListener('click', () => {
+      const comp = getActiveCompany();
+      const def = DEFAULT_COMPANIES.find(d => d.id === comp.id);
+      if (def) { comp.schedules = clone(def.schedules); saveState(); renderScheduleEditor(); renderDayInspector(); showToast('Hor�rios restaurados!'); }
+    });
+
+    document.getElementById('btnOpenSync').addEventListener('click', () => {
+      document.getElementById('syncDbUrl').value = syncConfig.dbUrl || '';
+      document.getElementById('syncRoomName').value = syncConfig.room || 'pulsegrid-studio-main';
+      openModal('syncModal');
+    });
+    document.getElementById('btnSaveSync').addEventListener('click', () => {
+      const dbUrl = document.getElementById('syncDbUrl').value.trim();
+      const room = document.getElementById('syncRoomName').value.trim() || 'pulsegrid-studio-main';
+      if (!dbUrl.startsWith('http')) { showToast('Informe uma URL v�lida do Firebase.'); return; }
+      syncConfig = { dbUrl, room };
+      localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncConfig));
+      connectRealtime(); closeModal('syncModal'); showToast('Sincroniza��o em tempo real conectada!');
+    });
+    document.getElementById('btnDisconnectSync').addEventListener('click', () => {
+      syncConfig = { dbUrl: '', room: 'pulsegrid-studio-main' };
+      localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncConfig));
+      if (sseConnection) sseConnection.close();
+      updateSyncUI(false); closeModal('syncModal'); showToast('Operando em modo local.');
+    });
+    document.getElementById('btnCopyShareLink').addEventListener('click', () => {
+      const dbUrl = document.getElementById('syncDbUrl').value.trim();
+      const room = document.getElementById('syncRoomName').value.trim() || 'pulsegrid-studio-main';
+      if (!dbUrl) { showToast('Conecte uma URL do Firebase primeiro.'); return; }
+      const url = `${window.location.origin}${window.location.pathname}#sync=${btoa(JSON.stringify({ dbUrl, room }))}`;
+      navigator.clipboard.writeText(url).then(() => showToast('Link ao vivo copiado!'));
+    });
+    document.getElementById('btnExportJson').addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }));
+      a.download = `pulsegrid-backup-${todayISO()}.json`;
+      a.click();
+    });
+    document.getElementById('importJsonInput').addEventListener('change', (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          if (parsed && Array.isArray(parsed.companies) && Array.isArray(parsed.posts)) {
+            state = parsed; saveState(); renderAll(); closeModal('syncModal'); showToast('Dados importados!');
+          }
+        } catch (err) { showToast('Arquivo JSON inv�lido.'); }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('btnPrevMonth').addEventListener('click', () => { currentCalDate = new Date(currentCalDate.getFullYear(), currentCalDate.getMonth() - 1, 1); renderAll(); });
+    document.getElementById('btnNextMonth').addEventListener('click', () => { currentCalDate = new Date(currentCalDate.getFullYear(), currentCalDate.getMonth() + 1, 1); renderAll(); });
+    document.getElementById('btnToday').addEventListener('click', () => { currentCalDate = new Date(); selectedDateISO = todayISO(); renderAll(); });
+
+    document.getElementById('networkFilterPills').querySelectorAll('.filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active'); activeFilter = btn.dataset.filter;
+        renderCalendar(); renderDayInspector();
+      });
+    });
+
+    const opSel = document.getElementById('operatorSelect');
+    opSel.value = operatorName;
+    opSel.addEventListener('change', () => { operatorName = opSel.value; localStorage.setItem('pulsegrid_operator', operatorName); });
+
+    function renderAll() { applyCompanyTheme(); renderCompanyTabs(); renderStats(); renderCalendar(); renderDayInspector(); }
+    renderAll();
+    if (syncConfig.dbUrl) connectRealtime();
+  </script>
+</body>
+</html>
