@@ -705,71 +705,114 @@
       }
     }
 
-    function saveState(pushRemote = true) {
-      state.updatedAt = Date.now();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      if (bc) bc.postMessage({ type: 'state-update', state });
-      if (pushRemote && syncConfig.dbUrl) pushToFirebase();
+    function normalizeRoom(raw) {
+      if (!raw || !Array.isArray(raw.companies) || !raw.companies.length) throw Error('Formato de sala inválido');
+      const room = clone(raw);
+      room.posts = (room.posts || []).filter(Boolean);
+      for (const company of room.companies) {
+        for (const schedule of Object.values(company.schedules)) schedule.slots ||= [];
+      }
+      return room;
     }
 
-    if (bc) {
-      bc.onmessage = (ev) => {
-        if (ev.data && ev.data.type === 'state-update') {
-          state = ev.data.state;
-          renderAll();
-        }
-      };
+    let baseline = clone(state);
+    let generation = 0;
+    let pending = 0;
+    let queue = Promise.resolve();
+
+    function acceptState(next) {
+      state = next;
+      baseline = clone(next);
+      if (!next.companies.some(c => c.id === activeCompanyId)) activeCompanyId = next.companies[0].id;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      renderAll();
     }
+
+    function mergeEdits(before, after, latest) {
+      if (JSON.stringify(before) === JSON.stringify(after)) return latest;
+      if (Array.isArray(after) && Array.isArray(before)) {
+        const key = item => item.id || item.time;
+        const old = new Map(before.map(item => [key(item), item]));
+        const next = new Map(after.map(item => [key(item), item]));
+        const merged = new Map((latest || []).map(item => [key(item), item]));
+        for (const id of old.keys()) if (!next.has(id)) merged.delete(id);
+        for (const [id, item] of next) {
+          if (JSON.stringify(old.get(id)) !== JSON.stringify(item)) {
+            merged.set(id, mergeEdits(old.get(id), item, merged.get(id)));
+          }
+        }
+        return Array.from(merged.values());
+      }
+      if (after && before && latest && typeof after === 'object') {
+        const result = {...latest};
+        for (const key of Object.keys(after)) result[key] = mergeEdits(before[key], after[key], latest[key]);
+        return result;
+      }
+      return after;
+    }
+
+    function saveState() {
+      state.updatedAt = Date.now();
+      const before = baseline;
+      const after = clone(state);
+      baseline = after;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      if (!syncConfig.dbUrl) {
+        if (bc) bc.postMessage({type: 'state-update', state});
+        return;
+      }
+      const session = generation;
+      const endpoint = getFirebaseEndpoint();
+      pending++;
+      queue = queue.then(async () => {
+        for (let attempt = 0; attempt < 6 && generation === session; attempt++) {
+          const read = await fetch(endpoint, {headers: {'X-Firebase-ETag': 'true'}, cache: 'no-store'});
+          if (!read.ok) throw Error('Leitura recusada');
+          const raw = await read.json();
+          const next = raw ? mergeEdits(before, after, normalizeRoom(raw)) : after;
+          const tag = read.headers.get('ETag');
+          if (!tag) throw Error('Versão da sala indisponível');
+          const write = await fetch(endpoint, {method: 'PUT', headers: {'Content-Type': 'application/json', 'if-match': tag}, body: JSON.stringify(next)});
+          if (write.status === 412) continue;
+          if (!write.ok) throw Error('Gravação recusada');
+          if (generation === session && pending === 1) acceptState(next);
+          return;
+        }
+        throw Error('Conflito ao salvar');
+      }).catch(err => {
+        if (generation === session) showToast(err.message + ' — alteração não sincronizada.');
+      }).finally(() => { if (generation === session) pending--; });
+    }
+
+    if (bc) bc.onmessage = ev => {
+      if (!syncConfig.dbUrl && ev.data?.type === 'state-update') acceptState(ev.data.state);
+    };
 
     function getFirebaseEndpoint() {
-      const base = syncConfig.dbUrl.replace(/\/+$/, '');
-      const room = encodeURIComponent(syncConfig.room || 'pulsegrid-studio-main');
-      return `${base}/rooms/${room}.json`;
-    }
-
-    async function pushToFirebase() {
-      if (!syncConfig.dbUrl) return;
-      try {
-        await fetch(getFirebaseEndpoint(), {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(state)
-        });
-      } catch (err) {}
+      return syncConfig.dbUrl.replace(/\/+$/, '') + '/rooms/' + encodeURIComponent(syncConfig.room) + '.json';
     }
 
     function connectRealtime() {
-      if (sseConnection) { sseConnection.close(); sseConnection = null; }
+      generation++;
+      pending = 0;
+      sseConnection?.close();
       updateSyncUI(false);
       if (!syncConfig.dbUrl) return;
-      const endpoint = getFirebaseEndpoint();
-      fetch(endpoint).then(r => r.json()).then(remote => {
-        if (remote && Array.isArray(remote.companies) && Array.isArray(remote.posts)) {
-          if (!state.updatedAt || remote.updatedAt >= state.updatedAt) {
-            state = remote;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-            renderAll();
-          } else { pushToFirebase(); }
-        } else { pushToFirebase(); }
-      }).catch(() => {});
-
-      try {
-        sseConnection = new EventSource(endpoint);
-        sseConnection.addEventListener('put', (e) => {
-          const payload = JSON.parse(e.data);
-          if (payload && payload.path === '/' && payload.data) {
-            const remote = payload.data;
-            if (remote.updatedAt && remote.updatedAt !== state.updatedAt) {
-              state = remote;
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-              renderAll();
-              showToast('Atualizado ao vivo pelo sócio!');
-            }
-          }
-        });
-        sseConnection.onopen = () => updateSyncUI(true);
-        sseConnection.onerror = () => updateSyncUI(false);
-      } catch (e) { updateSyncUI(false); }
+      const session = generation;
+      const stream = new EventSource(getFirebaseEndpoint());
+      sseConnection = stream;
+      stream.addEventListener('put', event => {
+        if (session !== generation) return;
+        try {
+          const {path, data} = JSON.parse(event.data);
+          if (path === '/' && data && !pending) acceptState(normalizeRoom(data));
+          updateSyncUI(true);
+        } catch { updateSyncUI(false); showToast('Não foi possível carregar os dados da sala.'); }
+      });
+      stream.onerror = () => { if (session === generation) updateSyncUI(false); };
+      stream.addEventListener('cancel', () => {
+        if (session === generation) { updateSyncUI(false); showToast('O Firebase recusou a leitura da sala.'); }
+      });
     }
 
     function updateSyncUI(isLive) {
@@ -1161,12 +1204,12 @@
       if (!dbUrl.startsWith('http')) { showToast('Informe uma URL válida do Firebase.'); return; }
       syncConfig = { dbUrl, room };
       localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncConfig));
-      connectRealtime(); closeModal('syncModal'); showToast('Sincronização em tempo real conectada!');
+      connectRealtime(); closeModal('syncModal'); showToast('Conectando à sala…');
     });
     document.getElementById('btnDisconnectSync').addEventListener('click', () => {
       syncConfig = { dbUrl: '', room: 'pulsegrid-studio-main' };
       localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncConfig));
-      if (sseConnection) sseConnection.close();
+      connectRealtime();
       updateSyncUI(false); closeModal('syncModal'); showToast('Operando em modo local.');
     });
     document.getElementById('btnCopyShareLink').addEventListener('click', () => {
