@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PulseGrid Studio - Organizador de Publica��es</title>
+  <title>PulseGrid Studio — Organizador de Publicações</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -387,27 +387,27 @@
         <div class="brand-logo" id="brandLogo">VC</div>
         <div class="brand-title">
           <h1>PulseGrid Studio</h1>
-          <span>Calend�rio &amp; Marca��o de Publica��es  Multi-Empresas</span>
+          <span>Calendário &amp; Marcação de Publicações • Multi-Empresas</span>
         </div>
       </div>
 
       <div class="topbar-controls">
         <div class="user-pill">
           <span>Operador:</span>
-          <select id="operatorSelect" title="Quem est� marcando">
-            <option value="Voc�">Voc�</option>
-            <option value="S�cio">S�cio</option>
+          <select id="operatorSelect" title="Quem está marcando">
+            <option value="Você">Você</option>
+            <option value="Sócio">Sócio</option>
             <option value="Social Media">Social Media</option>
           </select>
         </div>
 
-        <button class="sync-badge" id="btnOpenSync" title="Configurar sincroniza��o em tempo real na Vercel">
+        <button class="sync-badge" id="btnOpenSync" title="Configurar sincronização em tempo real na Vercel">
           <span class="sync-dot"></span>
           <span id="syncLabel">Modo Local (Configurar Tempo Real)</span>
         </button>
 
-        <button class="btn" id="btnScheduleManager">?? Hor�rios da Empresa</button>
-        <button class="btn btn-primary" id="btnQuickPost">+ Nova Marca��o</button>
+        <button class="btn" id="btnScheduleManager">⚙️ Horários da Empresa</button>
+        <button class="btn btn-primary" id="btnQuickPost">+ Nova Marcação</button>
       </div>
     </header>
 
@@ -427,11 +427,11 @@
     <main class="main-grid">
       <section class="card">
         <div class="card-header">
-          <div class="card-title"><span>?? Calend�rio de Publica��es</span></div>
+          <div class="card-title"><span>📅 Calendário de Publicações</span></div>
           <div class="cal-nav">
-            <button class="btn btn-sm" id="btnPrevMonth">?</button>
+            <button class="btn btn-sm" id="btnPrevMonth">◀</button>
             <span class="cal-month-label" id="calMonthLabel"></span>
-            <button class="btn btn-sm" id="btnNextMonth">?</button>
+            <button class="btn btn-sm" id="btnNextMonth">▶</button>
             <button class="btn btn-sm" id="btnToday">Hoje</button>
           </div>
         </div>
@@ -439,11 +439,11 @@
         <div class="cal-weekdays">
           <div class="cal-weekday">Dom</div>
           <div class="cal-weekday">Seg</div>
-          <div class="cal-weekday priority" title="Testar Instagram Reels">Ter ?</div>
-          <div class="cal-weekday priority" title="Prioridade Instagram Reels">Qua ?</div>
-          <div class="cal-weekday priority" title="Prioridade Instagram Reels">Qui ?</div>
+          <div class="cal-weekday priority" title="Testar Instagram Reels">Ter ★</div>
+          <div class="cal-weekday priority" title="Prioridade Instagram Reels">Qua ★</div>
+          <div class="cal-weekday priority" title="Prioridade Instagram Reels">Qui ★</div>
           <div class="cal-weekday">Sex</div>
-          <div class="cal-weekday">S�b</div>
+          <div class="cal-weekday">Sáb</div>
         </div>
         <div class="cal-grid" id="calGrid"></div>
       </section>
@@ -454,14 +454,14 @@
             <div class="selected-date-title" id="selectedDateTitle"></div>
             <div class="selected-date-hint" id="selectedDateHint"></div>
           </div>
-          <button class="btn btn-sm" id="btnMarkAllDay">V Marcar Dia</button>
+          <button class="btn btn-sm" id="btnMarkAllDay">✓ Marcar Dia</button>
         </div>
 
         <div id="networksContainer"></div>
 
         <div style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px;">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-            <strong style="font-size:13.5px;">?? Publica��es registradas neste dia</strong>
+            <strong style="font-size:13.5px;">📌 Publicações registradas neste dia</strong>
             <span style="font-size:11.5px; color:var(--text-muted);" id="dayTotalCount"></span>
           </div>
           <div class="day-posts-list" id="dayPostsList"></div>
@@ -473,8 +473,8 @@
   <div class="modal-backdrop" id="postModal">
     <div class="modal">
       <div class="modal-header">
-        <h2 id="postModalTitle">Registrar Publica��o</h2>
-        <button class="btn btn-sm" onclick="closeModal('postModal')">?</button>
+        <h2 id="postModalTitle">Registrar Publicação</h2>
+        <button class="btn btn-sm" onclick="closeModal('postModal')">✕</button>
       </div>
       <form id="postForm">
         <input type="hidden" id="pmPostId" />
@@ -488,7 +488,7 @@
             <input type="date" class="input-full" id="pmDate" required />
           </div>
           <div class="form-group">
-            <label>Hor�rio (flex�vel)</label>
+            <label>Horário (flexível)</label>
             <input type="text" class="input-full" id="pmTime" placeholder="Ex: 12h30 ou 18h" required />
           </div>
         </div>
@@ -504,22 +504,22 @@
           <div class="form-group">
             <label>Status</label>
             <select class="input-full" id="pmStatus">
-              <option value="published">? Publicado</option>
-              <option value="scheduled">?? Agendado / Planejado</option>
+              <option value="published">✅ Publicado</option>
+              <option value="scheduled">🕒 Agendado / Planejado</option>
             </select>
           </div>
         </div>
         <div class="form-group">
-          <label>T�tulo do Corte / Conte�do (opcional)</label>
+          <label>Título do Corte / Conteúdo (opcional)</label>
           <input type="text" class="input-full" id="pmTitle" placeholder="Ex: Corte podcast #42 - gancho viral" />
         </div>
         <div class="form-group">
-          <label>Observa��o / Link</label>
-          <input type="text" class="input-full" id="pmNote" placeholder="Link do v�deo, �udio em alta ou observa��o" />
+          <label>Observação / Link</label>
+          <input type="text" class="input-full" id="pmNote" placeholder="Link do vídeo, áudio em alta ou observação" />
         </div>
         <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:16px;">
           <button type="button" class="btn" onclick="closeModal('postModal')">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Salvar Marca��o</button>
+          <button type="submit" class="btn btn-primary">Salvar Marcação</button>
         </div>
       </form>
     </div>
@@ -528,15 +528,15 @@
   <div class="modal-backdrop" id="scheduleModal">
     <div class="modal">
       <div class="modal-header">
-        <h2>?? Hor�rios Flex�veis - <span id="smCompanyLabel"></span></h2>
-        <button class="btn btn-sm" onclick="closeModal('scheduleModal')">?</button>
+        <h2>⚙️ Horários Flexíveis — <span id="smCompanyLabel"></span></h2>
+        <button class="btn btn-sm" onclick="closeModal('scheduleModal')">✕</button>
       </div>
       <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px;">
-        Personalize os bot�es de hor�rio e observa��es estrat�gicas desta empresa. As altera��es atualizam imediatamente a grade de marca��o r�pida.
+        Personalize os botões de horário e observações estratégicas desta empresa. As alterações atualizam imediatamente a grade de marcação rápida.
       </p>
       <div id="scheduleEditorBody"></div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-        <button type="button" class="btn btn-sm" id="btnResetSchedules">Restaurar Padr�es</button>
+        <button type="button" class="btn btn-sm" id="btnResetSchedules">Restaurar Padrões</button>
         <button type="button" class="btn btn-primary" onclick="closeModal('scheduleModal')">Concluir</button>
       </div>
     </div>
@@ -545,17 +545,17 @@
   <div class="modal-backdrop" id="syncModal">
     <div class="modal">
       <div class="modal-header">
-        <h2>?? Sincroniza��o em Tempo Real (Vercel + S�cio)</h2>
-        <button class="btn btn-sm" onclick="closeModal('syncModal')">?</button>
+        <h2>🔄 Sincronização em Tempo Real (Vercel + Sócio)</h2>
+        <button class="btn btn-sm" onclick="closeModal('syncModal')">✕</button>
       </div>
       <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">
-        Esta ferramenta j� sincroniza instantaneamente entre abas locais e salva automaticamente. Para voc� e seu s�cio verem as marca��es <strong>ao vivo em dispositivos diferentes pela Vercel</strong>, conecte um banco gratuito do <strong>Firebase Realtime Database</strong> em 1 minuto:
+        Esta ferramenta já sincroniza instantaneamente entre abas locais e salva automaticamente. Para você e seu sócio verem as marcações <strong>ao vivo em dispositivos diferentes pela Vercel</strong>, conecte um banco gratuito do <strong>Firebase Realtime Database</strong> em 1 minuto:
       </p>
       <div class="code-box" style="margin-bottom:12px;">
-        1. Acesse console.firebase.google.com  Criar Projeto<br>
-        2. Menu "Build"  Realtime Database  Criar Banco (Modo Teste)<br>
+        1. Acesse console.firebase.google.com → Criar Projeto<br>
+        2. Menu "Build" → Realtime Database → Criar Banco (Modo Teste)<br>
         3. Copie a URL do banco (ex: https://seu-app-default-rtdb.firebaseio.com)<br>
-        4. Cole abaixo e clique em Conectar. Envie o link gerado para seu s�cio!
+        4. Cole abaixo e clique em Conectar. Envie o link gerado para seu sócio!
       </div>
       <div class="form-group">
         <label>URL do Firebase Realtime Database</label>
@@ -567,15 +567,15 @@
       </div>
       <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; margin-bottom:16px;">
         <button type="button" class="btn btn-primary" id="btnSaveSync">Conectar Tempo Real</button>
-        <button type="button" class="btn" id="btnCopyShareLink">?? Copiar Link p/ S�cio</button>
+        <button type="button" class="btn" id="btnCopyShareLink">🔗 Copiar Link p/ Sócio</button>
         <button type="button" class="btn" id="btnDisconnectSync">Desconectar</button>
       </div>
       <div style="border-top:1px solid var(--border); padding-top:12px; display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between; align-items:center;">
         <span style="font-size:12px; color:var(--text-secondary);">Backup manual (JSON):</span>
         <div style="display:flex; gap:8px;">
-          <button type="button" class="btn btn-sm" id="btnExportJson">? Exportar JSON</button>
+          <button type="button" class="btn btn-sm" id="btnExportJson">⬇ Exportar JSON</button>
           <label class="btn btn-sm" style="cursor:pointer;">
-            ? Importar JSON
+            ⬆ Importar JSON
             <input type="file" id="importJsonInput" accept=".json" style="display:none;" />
           </label>
         </div>
@@ -601,15 +601,15 @@
         schedules: {
           ig: {
             slots: [{ time: '12h30', tag: '' }, { time: '18h30', tag: '' }, { time: '20h30', tag: '' }],
-            note: 'Priorize quarta e quinta; teste tamb�m ter�a.'
+            note: 'Priorize quarta e quinta; teste também terça.'
           },
           tt: {
             slots: [{ time: '09h', tag: '' }, { time: '16h', tag: '' }, { time: '18h', tag: 'Teste' }, { time: '20h', tag: '' }],
-            note: 'Teste tamb�m 18h. Os estudos divergem sobre o melhor hor�rio (Data from 7M Posts+2).'
+            note: 'Teste também 18h. Os estudos divergem sobre o melhor horário (Data from 7M Posts+2).'
           },
           yt: {
             slots: [{ time: '12h', tag: '' }, { time: '18h', tag: '' }, { time: '20h', tag: '' }],
-            note: 'Hor�rios iniciais para experimentar, n�o uma garantia de melhor desempenho.'
+            note: 'Horários iniciais para experimentar, não uma garantia de melhor desempenho.'
           }
         }
       },
@@ -621,15 +621,15 @@
         schedules: {
           ig: {
             slots: [{ time: '12h30', tag: '' }, { time: '18h30', tag: '' }, { time: '20h30', tag: '' }],
-            note: 'Priorize quarta e quinta; teste tamb�m ter�a.'
+            note: 'Priorize quarta e quinta; teste também terça.'
           },
           tt: {
             slots: [{ time: '09h', tag: '' }, { time: '16h', tag: '' }, { time: '18h', tag: 'Teste' }, { time: '20h', tag: '' }],
-            note: 'Teste tamb�m 18h. Os estudos divergem sobre o melhor hor�rio (Data from 7M Posts+2).'
+            note: 'Teste também 18h. Os estudos divergem sobre o melhor horário (Data from 7M Posts+2).'
           },
           yt: {
             slots: [{ time: '12h', tag: '' }, { time: '18h', tag: '' }, { time: '20h', tag: '' }],
-            note: 'Hor�rios iniciais para experimentar, n�o uma garantia de melhor desempenho.'
+            note: 'Horários iniciais para experimentar, não uma garantia de melhor desempenho.'
           }
         }
       },
@@ -641,15 +641,15 @@
         schedules: {
           ig: {
             slots: [{ time: '12h30', tag: '' }, { time: '18h30', tag: '' }, { time: '20h30', tag: '' }],
-            note: 'Priorize quarta e quinta; teste tamb�m ter�a.'
+            note: 'Priorize quarta e quinta; teste também terça.'
           },
           tt: {
             slots: [{ time: '09h', tag: '' }, { time: '16h', tag: '' }, { time: '18h', tag: 'Teste' }, { time: '20h', tag: '' }],
-            note: 'Teste tamb�m 18h. Os estudos divergem sobre o melhor hor�rio (Data from 7M Posts+2).'
+            note: 'Teste também 18h. Os estudos divergem sobre o melhor horário (Data from 7M Posts+2).'
           },
           yt: {
             slots: [{ time: '12h', tag: '' }, { time: '18h', tag: '' }, { time: '20h', tag: '' }],
-            note: 'Hor�rios iniciais para experimentar, n�o uma garantia de melhor desempenho.'
+            note: 'Horários iniciais para experimentar, não uma garantia de melhor desempenho.'
           }
         }
       }
@@ -671,7 +671,7 @@
     let activeFilter = 'all';
     let currentCalDate = new Date();
     let selectedDateISO = todayISO();
-    let operatorName = localStorage.getItem('pulsegrid_operator') || 'Voc�';
+    let operatorName = localStorage.getItem('pulsegrid_operator') || 'Você';
     let syncConfig = loadSyncConfig();
     let sseConnection = null;
 
@@ -763,7 +763,7 @@
               state = remote;
               localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
               renderAll();
-              showToast('Atualizado ao vivo pelo s�cio!');
+              showToast('Atualizado ao vivo pelo sócio!');
             }
           }
         });
@@ -835,27 +835,27 @@
 
       document.getElementById('statsRow').innerHTML = `
         <div class="stat-card">
-          <div><div class="stat-label">Publicados no M�s</div><div class="stat-value" style="color:#6ee7b7;">${published}</div><div class="stat-sub">${comp.name}</div></div>
-          <div class="stat-icon">?</div>
+          <div><div class="stat-label">Publicados no Mês</div><div class="stat-value" style="color:#6ee7b7;">${published}</div><div class="stat-sub">${comp.name}</div></div>
+          <div class="stat-icon">✅</div>
         </div>
         <div class="stat-card">
-          <div><div class="stat-label">Agendados / Planejados</div><div class="stat-value" style="color:#fcd34d;">${scheduled}</div><div class="stat-sub">Aguardando confirma��o</div></div>
-          <div class="stat-icon">??</div>
+          <div><div class="stat-label">Agendados / Planejados</div><div class="stat-value" style="color:#fcd34d;">${scheduled}</div><div class="stat-sub">Aguardando confirmação</div></div>
+          <div class="stat-icon">🕒</div>
         </div>
         <div class="stat-card">
-          <div><div class="stat-label">Marca��es Hoje</div><div class="stat-value">${todayCount}</div><div class="stat-sub">Meta di�ria: ${Object.values(comp.schedules).reduce((a, b) => a + b.slots.length, 0)} hor�rios</div></div>
-          <div class="stat-icon">?</div>
+          <div><div class="stat-label">Marcações Hoje</div><div class="stat-value">${todayCount}</div><div class="stat-sub">Meta diária: ${Object.values(comp.schedules).reduce((a, b) => a + b.slots.length, 0)} horários</div></div>
+          <div class="stat-icon">⚡</div>
         </div>
         <div class="stat-card">
-          <div><div class="stat-label">Distribui��o por Rede</div><div class="stat-value" style="font-size:15px; margin-top:4px;"><span style="color:#ff85b3;">IG ${igCount}</span> � <span style="color:#7ef9f5;">TT ${ttCount}</span> � <span style="color:#ff8a84;">YT ${ytCount}</span></div><div class="stat-sub">Total no m�s: ${monthPosts.length}</div></div>
-          <div class="stat-icon">??</div>
+          <div><div class="stat-label">Distribuição por Rede</div><div class="stat-value" style="font-size:15px; margin-top:4px;"><span style="color:#ff85b3;">IG ${igCount}</span> · <span style="color:#7ef9f5;">TT ${ttCount}</span> · <span style="color:#ff8a84;">YT ${ytCount}</span></div><div class="stat-sub">Total no mês: ${monthPosts.length}</div></div>
+          <div class="stat-icon">📊</div>
         </div>`;
     }
 
     function renderCalendar() {
       const year = currentCalDate.getFullYear();
       const month = currentCalDate.getMonth();
-      const monthNames = ['janeiro', 'fevereiro', 'mar�o', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+      const monthNames = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
       document.getElementById('calMonthLabel').textContent = `${monthNames[month]} ${year}`;
       const firstDay = new Date(year, month, 1);
       const gridStart = new Date(year, month, 1 - firstDay.getDay());
@@ -879,14 +879,14 @@
         posts.sort((a, b) => normalizeTimeSort(a.time) - normalizeTimeSort(b.time));
 
         const chipsHtml = posts.map(p => {
-          const icon = p.status === 'published' ? 'V' : '?';
+          const icon = p.status === 'published' ? '✓' : '◷';
           const cls = p.status === 'published' ? '' : 'scheduled';
-          return `<div class="cal-chip ${p.network} ${cls}" title="${NETWORKS[p.network].name}  ${p.time}"><span class="cal-chip-time">${icon} ${p.time}</span><span>${NETWORKS[p.network].short}</span></div>`;
+          return `<div class="cal-chip ${p.network} ${cls}" title="${NETWORKS[p.network].name} • ${p.time}"><span class="cal-chip-time">${icon} ${p.time}</span><span>${NETWORKS[p.network].short}</span></div>`;
         }).join('');
 
         let starHtml = '';
-        if (isPriorityReels) starHtml = '<span class="day-badge-star">? Reels</span>';
-        else if (isTestReels) starHtml = '<span class="day-badge-star" style="opacity:0.65;">? Teste</span>';
+        if (isPriorityReels) starHtml = '<span class="day-badge-star">★ Reels</span>';
+        else if (isTestReels) starHtml = '<span class="day-badge-star" style="opacity:0.65;">☆ Teste</span>';
 
         html += `
           <div class="cal-day ${isOtherMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${iso}">
@@ -907,9 +907,9 @@
       document.getElementById('selectedDateTitle').textContent = d.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
 
       const wd = d.getDay();
-      let hint = `${comp.name}  Clique no hor�rio para alternar: Publicado  Agendado  Limpar`;
-      if (wd === 3 || wd === 4) hint = `? Dia PRIORIT�RIO para Instagram Reels (${comp.name})`;
-      else if (wd === 2) hint = `? Dia recomendado para TESTE no Instagram Reels (${comp.name})`;
+      let hint = `${comp.name} • Clique no horário para alternar: Publicado → Agendado → Limpar`;
+      if (wd === 3 || wd === 4) hint = `★ Dia PRIORITÁRIO para Instagram Reels (${comp.name})`;
+      else if (wd === 2) hint = `☆ Dia recomendado para TESTE no Instagram Reels (${comp.name})`;
       document.getElementById('selectedDateHint').textContent = hint;
 
       const container = document.getElementById('networksContainer');
@@ -922,10 +922,10 @@
         const slotsHtml = sched.slots.map(slot => {
           const existing = dayPosts.find(p => p.network === netKey && p.time === slot.time);
           let statusClass = '';
-          let statusIcon = '	';
+          let statusIcon = '○';
           if (existing) {
             statusClass = existing.status === 'published' ? 'status-published' : 'status-scheduled';
-            statusIcon = existing.status === 'published' ? '?' : '??';
+            statusIcon = existing.status === 'published' ? '✅' : '🕒';
           }
           return `
             <button type="button" class="slot-btn ${netKey} ${statusClass} ${slot.tag ? 'test-slot' : ''}" data-net="${netKey}" data-time="${slot.time}">
@@ -946,8 +946,8 @@
             </div>
             <div class="slots-grid">${slotsHtml}</div>
             <div class="add-slot-inline">
-              <input type="text" class="input-sm" placeholder="+ hor�rio (ex: 21h30)" id="quickSlot_${netKey}" style="width:140px;" />
-              <button type="button" class="btn btn-sm" onclick="quickAddSlot('${netKey}')">Adicionar hor�rio</button>
+              <input type="text" class="input-sm" placeholder="+ horário (ex: 21h30)" id="quickSlot_${netKey}" style="width:140px;" />
+              <button type="button" class="btn btn-sm" onclick="quickAddSlot('${netKey}')">Adicionar horário</button>
             </div>
           </div>`;
       }).join('');
@@ -961,26 +961,26 @@
       document.getElementById('dayTotalCount').textContent = `${sortedPosts.length} registro(s)`;
 
       if (sortedPosts.length === 0) {
-        listEl.innerHTML = `<div style="font-size:12.5px; color:var(--text-muted); padding:10px 0;">Nenhum hor�rio marcado neste dia ainda. Clique em qualquer hor�rio acima para marcar!</div>`;
+        listEl.innerHTML = `<div style="font-size:12.5px; color:var(--text-muted); padding:10px 0;">Nenhum horário marcado neste dia ainda. Clique em qualquer horário acima para marcar!</div>`;
         return;
       }
 
       listEl.innerHTML = sortedPosts.map(p => {
         const net = NETWORKS[p.network];
-        const statusLabel = p.status === 'published' ? '? Publicado' : '?? Agendado';
+        const statusLabel = p.status === 'published' ? '✅ Publicado' : '🕒 Agendado';
         return `
           <div class="post-item">
             <div class="post-item-left">
               <div class="net-icon ${p.network}" style="width:28px; height:28px; font-size:11px;">${net.badge}</div>
               <div class="post-item-meta">
-                <div class="post-item-title">${p.time}  ${net.name} ${p.title ? '- ' + escapeHtml(p.title) : ''}</div>
-                <div class="post-item-sub">Por ${escapeHtml(p.author || 'Equipe')} ${p.note ? ' ' + escapeHtml(p.note) : ''}</div>
+                <div class="post-item-title">${p.time} • ${net.name} ${p.title ? '— ' + escapeHtml(p.title) : ''}</div>
+                <div class="post-item-sub">Por ${escapeHtml(p.author || 'Equipe')} ${p.note ? '• ' + escapeHtml(p.note) : ''}</div>
               </div>
             </div>
             <div class="post-item-actions">
               <span class="status-pill ${p.status}" onclick="cyclePostStatus('${p.id}')">${statusLabel}</span>
-              <button class="btn btn-sm" onclick="openEditPost('${p.id}')">??</button>
-              <button class="btn btn-sm" onclick="deletePost('${p.id}')">??</button>
+              <button class="btn btn-sm" onclick="openEditPost('${p.id}')">✏️</button>
+              <button class="btn btn-sm" onclick="deletePost('${p.id}')">🗑</button>
             </div>
           </div>`;
       }).join('');
@@ -991,14 +991,14 @@
       const idx = state.posts.findIndex(p => p.companyId === comp.id && p.date === selectedDateISO && p.network === network && p.time === time);
       if (idx === -1) {
         state.posts.push({ id: uid(), companyId: comp.id, date: selectedDateISO, network, time, status: 'published', title: '', note: '', author: operatorName });
-        showToast(`? Marcado ${NETWORKS[network].short} �s ${time} (Publicado)`);
+        showToast(`✅ Marcado ${NETWORKS[network].short} às ${time} (Publicado)`);
       } else if (state.posts[idx].status === 'published') {
         state.posts[idx].status = 'scheduled';
         state.posts[idx].author = operatorName;
-        showToast(`?? Alterado para Agendado (${NETWORKS[network].short} ${time})`);
+        showToast(`🕒 Alterado para Agendado (${NETWORKS[network].short} ${time})`);
       } else {
         state.posts.splice(idx, 1);
-        showToast(`Marca��o removida (${NETWORKS[network].short} ${time})`);
+        showToast(`Marcação removida (${NETWORKS[network].short} ${time})`);
       }
       saveState(); renderAll();
     }
@@ -1013,7 +1013,7 @@
 
     window.deletePost = function(postId) {
       state.posts = state.posts.filter(x => x.id !== postId);
-      saveState(); renderAll(); showToast('Marca��o removida');
+      saveState(); renderAll(); showToast('Marcação removida');
     };
 
     window.quickAddSlot = function(netKey) {
@@ -1022,13 +1022,13 @@
       if (!val) return;
       const comp = getActiveCompany();
       if (comp.schedules[netKey].slots.some(s => s.time.toLowerCase() === val.toLowerCase())) {
-        showToast('Esse hor�rio j� existe nesta rede!');
+        showToast('Esse horário já existe nesta rede!');
         return;
       }
       comp.schedules[netKey].slots.push({ time: val, tag: '' });
       comp.schedules[netKey].slots.sort((a, b) => normalizeTimeSort(a.time) - normalizeTimeSort(b.time));
       input.value = '';
-      saveState(); renderAll(); showToast(`Hor�rio ${val} adicionado em ${comp.name}`);
+      saveState(); renderAll(); showToast(`Horário ${val} adicionado em ${comp.name}`);
     };
 
     document.getElementById('btnMarkAllDay').addEventListener('click', () => {
@@ -1045,7 +1045,7 @@
         });
       });
       saveState(); renderAll();
-      showToast(added > 0 ? `? ${added} hor�rio(s) marcados!` : 'Todos os hor�rios do dia j� estavam marcados.');
+      showToast(added > 0 ? `✅ ${added} horário(s) marcados!` : 'Todos os horários do dia já estavam marcados.');
     });
 
     window.openModal = id => document.getElementById(id).classList.add('open');
@@ -1053,7 +1053,7 @@
 
     document.getElementById('btnQuickPost').addEventListener('click', () => {
       const comp = getActiveCompany();
-      document.getElementById('postModalTitle').textContent = 'Nova Marca��o de Publica��o';
+      document.getElementById('postModalTitle').textContent = 'Nova Marcação de Publicação';
       document.getElementById('pmPostId').value = '';
       document.getElementById('pmCompanyName').value = comp.name;
       document.getElementById('pmDate').value = selectedDateISO;
@@ -1069,7 +1069,7 @@
       const p = state.posts.find(x => x.id === postId);
       if (!p) return;
       const comp = state.companies.find(c => c.id === p.companyId);
-      document.getElementById('postModalTitle').textContent = 'Editar Publica��o';
+      document.getElementById('postModalTitle').textContent = 'Editar Publicação';
       document.getElementById('pmPostId').value = p.id;
       document.getElementById('pmCompanyName').value = comp ? comp.name : '';
       document.getElementById('pmDate').value = p.date;
@@ -1097,11 +1097,11 @@
       if (postId) {
         const idx = state.posts.findIndex(x => x.id === postId);
         if (idx !== -1) state.posts[idx] = { ...state.posts[idx], ...payload };
-        showToast('Publica��o atualizada!');
+        showToast('Publicação atualizada!');
       } else {
         state.posts.push({ id: uid(), companyId: comp.id, ...payload });
         selectedDateISO = payload.date;
-        showToast('Publica��o registrada!');
+        showToast('Publicação registrada!');
       }
       closeModal('postModal'); saveState(); renderAll();
     });
@@ -1115,14 +1115,14 @@
         const tagsHtml = sched.slots.map((s, idx) => `
           <span class="slot-btn ${netKey}" style="padding:5px 9px; font-size:12px;">
             ${s.time}${s.tag ? ' (' + s.tag + ')' : ''}
-            <span class="slot-remove" onclick="removeCompanySlot('${netKey}', ${idx})">?</span>
+            <span class="slot-remove" onclick="removeCompanySlot('${netKey}', ${idx})">✕</span>
           </span>`).join('');
         return `
           <div class="network-section">
             <div style="font-weight:700; font-size:13.5px; margin-bottom:8px;">${net.name}</div>
             <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">${tagsHtml}</div>
             <div style="display:flex; gap:6px; margin-bottom:8px;">
-              <input type="text" class="input-sm" id="smAddTime_${netKey}" placeholder="Novo hor�rio (ex: 14h30)" style="flex:1;" />
+              <input type="text" class="input-sm" id="smAddTime_${netKey}" placeholder="Novo horário (ex: 14h30)" style="flex:1;" />
               <input type="text" class="input-sm" id="smAddTag_${netKey}" placeholder="Tag opcional" style="width:130px;" />
               <button type="button" class="btn btn-sm" onclick="addCompanySlot('${netKey}')">+ Add</button>
             </div>
@@ -1147,7 +1147,7 @@
     document.getElementById('btnResetSchedules').addEventListener('click', () => {
       const comp = getActiveCompany();
       const def = DEFAULT_COMPANIES.find(d => d.id === comp.id);
-      if (def) { comp.schedules = clone(def.schedules); saveState(); renderScheduleEditor(); renderDayInspector(); showToast('Hor�rios restaurados!'); }
+      if (def) { comp.schedules = clone(def.schedules); saveState(); renderScheduleEditor(); renderDayInspector(); showToast('Horários restaurados!'); }
     });
 
     document.getElementById('btnOpenSync').addEventListener('click', () => {
@@ -1158,10 +1158,10 @@
     document.getElementById('btnSaveSync').addEventListener('click', () => {
       const dbUrl = document.getElementById('syncDbUrl').value.trim();
       const room = document.getElementById('syncRoomName').value.trim() || 'pulsegrid-studio-main';
-      if (!dbUrl.startsWith('http')) { showToast('Informe uma URL v�lida do Firebase.'); return; }
+      if (!dbUrl.startsWith('http')) { showToast('Informe uma URL válida do Firebase.'); return; }
       syncConfig = { dbUrl, room };
       localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncConfig));
-      connectRealtime(); closeModal('syncModal'); showToast('Sincroniza��o em tempo real conectada!');
+      connectRealtime(); closeModal('syncModal'); showToast('Sincronização em tempo real conectada!');
     });
     document.getElementById('btnDisconnectSync').addEventListener('click', () => {
       syncConfig = { dbUrl: '', room: 'pulsegrid-studio-main' };
@@ -1191,7 +1191,7 @@
           if (parsed && Array.isArray(parsed.companies) && Array.isArray(parsed.posts)) {
             state = parsed; saveState(); renderAll(); closeModal('syncModal'); showToast('Dados importados!');
           }
-        } catch (err) { showToast('Arquivo JSON inv�lido.'); }
+        } catch (err) { showToast('Arquivo JSON inválido.'); }
       };
       reader.readAsText(file);
     });
